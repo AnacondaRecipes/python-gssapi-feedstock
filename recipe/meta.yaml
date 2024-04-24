@@ -24,6 +24,7 @@ requirements:
     - {{ compiler('c') }}
     - patch     # [unix]
     - m2-patch  # [win]
+    - pkg-config  # [win]
   host:
     - python
     - cython >=0.29.29,<3.0.0a0
