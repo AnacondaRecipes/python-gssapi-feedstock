@@ -32,7 +32,7 @@ requirements:
     - pip
     - setuptools
     - wheel
-    - openssl  # [win]
+    #- openssl  # [win]
   run:
     - python
     - decorator
