@@ -32,6 +32,7 @@ requirements:
     - pip
     - setuptools
     - wheel
+    - tk  # [win]
   run:
     - python
     - decorator
