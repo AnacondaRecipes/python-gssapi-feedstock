@@ -1,5 +1,5 @@
 From 10a13a7246f0936d0638e7b8956c03a28411314b Mon Sep 17 00:00:00 2001
-From: Serhii Kupriienko <skupriienko@anaconda.com>
+From: Serhii Kupriienko
 Date: Wed, 24 Apr 2024 10:44:29 +0300
 Subject: [PATCH] Fix path
 
