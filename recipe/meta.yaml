@@ -23,8 +23,8 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - patch
-    - m2-patch
+    - patch     # [unix]
+    - m2-patch  # [win]
   host:
     - python
     - cython >=0.29.29,<4.0.0a0
