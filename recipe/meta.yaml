@@ -8,9 +8,10 @@ package:
 source:
   url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: aa3c8d0b1526f52559552bb2c9d2d6be013d76a8e5db00b39a1db5727e93b0b0
-  patches:                  # [osx or win]
+  patches:
     - 0001-fix-setup.patch  # [osx]
     - fix_path.patch       # [win]
+    - use-distutils-from-stdlib.patch
 
 build:
   number: 0
@@ -22,8 +23,8 @@ build:
 requirements:
   build:
     - {{ compiler('c') }}
-    - patch     # [osx]
-    - m2-patch  # [win]
+    - patch
+    - m2-patch
   host:
     - python
     - cython >=0.29.29,<4.0.0a0
