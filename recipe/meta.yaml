@@ -10,7 +10,7 @@ source:
   sha256: aa3c8d0b1526f52559552bb2c9d2d6be013d76a8e5db00b39a1db5727e93b0b0
   patches:                  # [osx or win]
     - 0001-fix-setup.patch  # [osx]
-    - fix_patch.patch       # [win]
+    - fix_path.patch       # [win]
 
 build:
   number: 0
