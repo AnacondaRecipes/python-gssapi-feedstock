@@ -11,7 +11,7 @@ source:
   patches:
     - 0001-fix-setup.patch  # [osx]
     - fix_path.patch       # [win]
-    - use-distutils-from-stdlib.patch
+    #- use-distutils-from-stdlib.patch
 
 build:
   number: 0
@@ -32,7 +32,7 @@ requirements:
     - pip
     - setuptools
     - wheel
-    - tk  # [win]
+    - openssl  # [win]
   run:
     - python
     - decorator
