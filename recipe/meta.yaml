@@ -15,7 +15,7 @@ source:
 build:
   number: 0
   skip: true  # [py<37 or unix]
-  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
+  script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv  # [not win]
   script_env:
     - GSSAPI_SUPPORT_DETECT=false  # [build_platform != target_platform]
 
