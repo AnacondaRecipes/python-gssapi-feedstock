@@ -15,10 +15,8 @@ source:
 
 build:
   number: 0
-  skip: true  # [py<37]
+  skip: true  # [py<37 or unix]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv
-  script_env:
-    - GSSAPI_SUPPORT_DETECT=false  # [build_platform != target_platform]
 
 requirements:
   build:
@@ -32,7 +30,7 @@ requirements:
     - pip
     - setuptools
     - wheel
-    #- openssl  # [win]
+    - openssl  # [win]
   run:
     - python
     - decorator
