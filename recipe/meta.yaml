@@ -41,18 +41,30 @@ requirements:
     # libkrb5 provides gssapi64.dll on Windows
     - libkrb5  # [win]
 
+# The tests fail because of the error "FileNotFoundError: [Errno 2] No such file or directory: '/usr/sbin/kdb5_util'".
+# The real location of kdb5_util is $PREFIX/sbin not /usr/sbin but it's hardcoded in the k5test's source code,
+# see https://github.com/pythongssapi/k5test/blob/17512bd2137ffcdd1fdb7ff4210891ad34d27803/k5test/realm.py#L459
+{% set tests_to_skip = "_not_a_real_test" %}
+{% set tests_to_skip = tests_to_skip + " or CredsTestCase or MechsTestCase or NamesTestCase or SecurityContextTestCase or TestBaseUtilities" %}
+{% set tests_to_skip = tests_to_skip + " or test_basic_init_default_ctx or test_bad_channel_binding_raises_error or test_basic_accept_context or test_basic_accept_context_no_acceptor_creds or test_channel_bindings" %}
+{% set tests_to_skip = tests_to_skip + " or TestWrapUnwrap" %}
+
 test:
   imports:
     - gssapi
     - gssapi.raw
     - gssapi.raw._enum_extensions
+  source_files:
+    - gssapi/tests
   requires:
     - pip
     - pytest
+    - parameterized
   commands:
     - pip check
     - python -c "import importlib.metadata; assert importlib.metadata.version('gssapi') == '{{ version }}'"
-    - pytest --pyargs gssapi -v
+    - pip install k5test
+    - pytest gssapi/tests -v -k "not ({{ tests_to_skip }})"
 
 about:
   home: https://github.com/pythongssapi/python-gssapi
