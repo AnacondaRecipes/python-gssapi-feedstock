@@ -30,7 +30,7 @@ requirements:
     - cython >=0.29.29,<4.0.0a0
     - libkrb5 {{ krb5 }}
     - pip
-    - setuptools
+    - setuptools >=40.6.0
     - wheel
   run:
     - python
