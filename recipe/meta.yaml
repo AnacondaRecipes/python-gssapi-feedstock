@@ -49,6 +49,9 @@ requirements:
 {% set tests_to_skip = tests_to_skip + " or test_basic_init_default_ctx or test_bad_channel_binding_raises_error or test_basic_accept_context or test_basic_accept_context_no_acceptor_creds or test_channel_bindings" %}
 {% set tests_to_skip = tests_to_skip + " or TestWrapUnwrap" %}
 
+{% set tests_to_ignore = "" %}
+{% set tests_to_ignore = tests_to_ignore + " --ignore=gssapi/tests/test_high_level.py --ignore=gssapi/tests/test_raw.py" %}        # [win]
+
 test:
   imports:
     - gssapi
@@ -64,9 +67,9 @@ test:
     - pip check
     - python -c "import importlib.metadata; assert importlib.metadata.version('gssapi') == '{{ version }}'"
     - pip install k5test
+    - pytest -v gssapi/tests -k "not ({{ tests_to_skip }})"                        # [unix]
     # subprocess.CalledProcessError: Command 'krb5-config --prefix' returned non-zero exit status 1 on Windows.
-    - pytest gssapi/tests -v -k "not ({{ tests_to_skip }})"  # [unix]
-    - pytest gssapi/tests -v -k "not ({{ tests_to_skip }})" --ignore=gssapi/tests/test_high_level.py --ignore=gssapi/tests/test_raw.py  # [win]
+    - pytest -v gssapi/tests {{ tests_to_ignore }} -k "not ({{ tests_to_skip }})"  # [win]
 
 about:
   home: https://github.com/pythongssapi/python-gssapi
