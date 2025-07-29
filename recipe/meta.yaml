@@ -50,7 +50,7 @@ test:
     - pip
   commands:
     - pip check
-    - python -c "import gssapi; print(gssapi.__version__)"
+    - python -c "import importlib.metadata; assert importlib.metadata.version('gssapi') == '{{ version }}'"
 
 about:
   home: https://github.com/pythongssapi/python-gssapi
