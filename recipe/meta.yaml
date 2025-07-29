@@ -64,7 +64,9 @@ test:
     - pip check
     - python -c "import importlib.metadata; assert importlib.metadata.version('gssapi') == '{{ version }}'"
     - pip install k5test
-    - pytest gssapi/tests -v -k "not ({{ tests_to_skip }})"
+    # subprocess.CalledProcessError: Command 'krb5-config --prefix' returned non-zero exit status 1 on Windows.
+    - pytest gssapi/tests -v -k "not ({{ tests_to_skip }})"  # [unix]
+    - pytest gssapi/tests -v -k "not ({{ tests_to_skip }})" --ignore=gssapi/tests/test_high_level.py --ignore=gssapi/tests/test_raw.py  # [win]
 
 about:
   home: https://github.com/pythongssapi/python-gssapi
