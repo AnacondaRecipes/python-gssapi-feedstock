@@ -51,6 +51,7 @@ test:
   commands:
     - pip check
     - python -c "import importlib.metadata; assert importlib.metadata.version('gssapi') == '{{ version }}'"
+    - pytest --pyargs gssapi -v
 
 about:
   home: https://github.com/pythongssapi/python-gssapi
