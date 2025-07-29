@@ -28,13 +28,18 @@ requirements:
   host:
     - python
     - cython >=0.29.29,<4.0.0a0
-    - krb5 {{ krb5 }}
+    # libkrb5 1.21.3 (libraries and headers) fails on Windows with an error: "C2065: 'gss_key_value_set_desc': undeclared identifier"
+    # but krb5 (plus executables) works fine.
+    - krb5 {{ krb5 }}     # [win]
+    - libkrb5 {{ krb5 }}  # [unix]
     - pip
     - setuptools >=40.6.0
     - wheel
   run:
     - python
     - decorator
+    # libkrb5 provides gssapi64.dll on Windows
+    - libkrb5  # [win]
 
 test:
   imports:
@@ -45,6 +50,7 @@ test:
     - pip
   commands:
     - pip check
+    - python -c "import gssapi; print(gssapi.__version__)"
 
 about:
   home: https://github.com/pythongssapi/python-gssapi
