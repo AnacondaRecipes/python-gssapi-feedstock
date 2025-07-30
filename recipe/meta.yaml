@@ -67,7 +67,7 @@ test:
     - pytest -v ${SP_DIR}/gssapi/tests -k "not ({{ tests_to_skip }})"                        # [unix]
     # subprocess.CalledProcessError: Command 'krb5-config --prefix' returned non-zero exit status 1 on Windows.
     # Remove test files
-    - del %SP_DIR%\\gssapi\\tests\\test_raw.py %SP_DIR%\\gssapi\\tests\\test_high_level.py
+    - del %SP_DIR%\\gssapi\\tests\\test_raw.py %SP_DIR%\\gssapi\\tests\\test_high_level.py  # [win]
     - python -m pytest -v -k "not ({{ tests_to_skip }})" %SP_DIR%/gssapi/tests # [win]
 
 about:
