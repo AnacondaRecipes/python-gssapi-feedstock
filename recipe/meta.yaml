@@ -50,7 +50,7 @@ requirements:
 {% set tests_to_skip = tests_to_skip + " or TestWrapUnwrap" %}
 
 {% set tests_to_ignore = "" %}
-{% set tests_to_ignore = tests_to_ignore + " --ignore=gssapi/tests/test_high_level.py --ignore=gssapi/tests/test_raw.py" %}  # [win]
+{% set tests_to_ignore = tests_to_ignore + " --ignore=gssapi\\tests\\test_high_level.py --ignore=gssapi\\tests\\test_raw.py" %}  # [win]
 
 test:
   imports:
