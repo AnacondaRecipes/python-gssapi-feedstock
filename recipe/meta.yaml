@@ -50,7 +50,7 @@ requirements:
 {% set tests_to_skip = tests_to_skip + " or TestWrapUnwrap" %}
 
 {% set tests_to_ignore = "" %}
-{% set tests_to_ignore = tests_to_ignore + " --ignore=gssapi\\tests\\test_high_level.py --ignore=gssapi\\tests\\test_raw.py" %}  # [win]
+{% set tests_to_ignore = tests_to_ignore + " --ignore=%SP_DIR%\gssapi\tests\test_high_level.py --ignore=%SP_DIR%\gssapi\tests\test_raw.py" %}  # [win]
 
 test:
   imports:
@@ -69,7 +69,7 @@ test:
     - pip install k5test
     - pytest -v gssapi/tests -k "not ({{ tests_to_skip }})"                        # [unix]
     # subprocess.CalledProcessError: Command 'krb5-config --prefix' returned non-zero exit status 1 on Windows.
-    - pytest -v gssapi/tests {{ tests_to_ignore }} -k "not ({{ tests_to_skip }})"  # [win]
+    - pytest --pyargs gssapi.tests {{ tests_to_ignore }} -k "not ({{ tests_to_skip }})"  # [win]
 
 about:
   home: https://github.com/pythongssapi/python-gssapi
