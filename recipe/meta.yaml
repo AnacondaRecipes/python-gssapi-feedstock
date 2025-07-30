@@ -58,6 +58,7 @@ test:
     - gssapi.raw
     - gssapi.raw._enum_extensions
   source_files:
+    - gssapi/tests
   requires:
     - pip
     - pytest
