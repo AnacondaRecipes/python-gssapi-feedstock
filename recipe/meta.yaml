@@ -54,21 +54,19 @@ test:
     - gssapi
     - gssapi.raw
     - gssapi.raw._enum_extensions
-  source_files:
-    - gssapi/tests
+  source_files:      # [unix]
+    - gssapi/tests   # [unix]
   requires:
     - pip
-    - pytest
-    - parameterized
+    - pytest         # [unix]
+    - parameterized  # [unix]
   commands:
     - pip check
     - python -c "import importlib.metadata; assert importlib.metadata.version('gssapi') == '{{ version }}'"
-    - pip install k5test
-    - pytest -v ${SP_DIR}/gssapi/tests -k "not ({{ tests_to_skip }})"                        # [unix]
+    - pip install k5test                                               # [unix]
+    - pytest -v ${SP_DIR}/gssapi/tests -k "not ({{ tests_to_skip }})"  # [unix]
     # subprocess.CalledProcessError: Command 'krb5-config --prefix' returned non-zero exit status 1 on Windows.
-    # Remove test files
-    - del %SP_DIR%\\gssapi\\tests\\test_raw.py %SP_DIR%\\gssapi\\tests\\test_high_level.py  # [win]
-    - python -m pytest -v -k "not ({{ tests_to_skip }})" %SP_DIR%/gssapi/tests # [win]
+    # Skip tests on Windows because k5test gets files from %SP_DIR% and not from source files.
 
 about:
   home: https://github.com/pythongssapi/python-gssapi
