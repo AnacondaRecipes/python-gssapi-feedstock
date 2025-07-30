@@ -57,8 +57,6 @@ test:
     - gssapi
     - gssapi.raw
     - gssapi.raw._enum_extensions
-  source_files:
-    - gssapi/tests
   requires:
     - pip
     - pytest
@@ -67,9 +65,9 @@ test:
     - pip check
     - python -c "import importlib.metadata; assert importlib.metadata.version('gssapi') == '{{ version }}'"
     - pip install k5test
-    - pytest -v gssapi/tests -k "not ({{ tests_to_skip }})"                        # [unix]
+    - pytest -v ${SP_DIR}/gssapi/tests -k "not ({{ tests_to_skip }})"                        # [unix]
     # subprocess.CalledProcessError: Command 'krb5-config --prefix' returned non-zero exit status 1 on Windows.
-    - pytest --pyargs gssapi.tests {{ tests_to_ignore }} -k "not ({{ tests_to_skip }})"  # [win]
+    - pytest --pyargs %SP_DIR%\gssapi\tests {{ tests_to_ignore }} -k "not ({{ tests_to_skip }})"  # [win]
 
 about:
   home: https://github.com/pythongssapi/python-gssapi
