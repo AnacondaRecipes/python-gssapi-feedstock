@@ -6,14 +6,14 @@ package:
   version: {{ version }}
 
 source:
-  url: https://pypi.io/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
+  url: https://pypi.org/packages/source/{{ name[0] }}/{{ name }}/{{ name }}-{{ version }}.tar.gz
   sha256: aa3c8d0b1526f52559552bb2c9d2d6be013d76a8e5db00b39a1db5727e93b0b0
   patches:                  # [win or osx]
     - 0001-fix-setup.patch  # [osx]
     - fix_path.patch        # [win]
 
 build:
-  number: 1
+  number: 2
   skip: true  # [py<37]
   script: {{ PYTHON }} -m pip install . --no-deps --no-build-isolation --ignore-installed --no-cache-dir -vv  # [not win]
   script_env:
@@ -21,29 +21,52 @@ build:
 
 requirements:
   build:
+    - {{ stdlib('c') }}
     - {{ compiler('c') }}
-    - patch     # [unix]
-    - m2-patch  # [win]
+    - patch        # [unix]
+    - msys2-patch  # [win]
   host:
     - python
     - cython >=0.29.29,<4.0.0a0
-    - krb5 1.20
+    # libkrb5 1.21.3 (libraries and headers) fails on Windows with an error: "C2065: 'gss_key_value_set_desc': undeclared identifier"
+    # but krb5 (plus executables) works fine.
+    - krb5 {{ krb5 }}     # [win]
+    - libkrb5 {{ krb5 }}  # [unix]
     - pip
-    - setuptools
+    - setuptools >=40.6.0
     - wheel
   run:
     - python
     - decorator
+    # libkrb5 provides gssapi64.dll on Windows
+    - libkrb5 >=1.21.3,<1.22.0a0  # [win]
+
+# The tests fail because of the error "FileNotFoundError: [Errno 2] No such file or directory: '/usr/sbin/kdb5_util'".
+# The real location of kdb5_util is $PREFIX/sbin not /usr/sbin but it's hardcoded in the k5test's source code,
+# see https://github.com/pythongssapi/k5test/blob/17512bd2137ffcdd1fdb7ff4210891ad34d27803/k5test/realm.py#L459
+{% set tests_to_skip = "_not_a_real_test" %}
+{% set tests_to_skip = tests_to_skip + " or CredsTestCase or MechsTestCase or NamesTestCase or SecurityContextTestCase or TestBaseUtilities" %}
+{% set tests_to_skip = tests_to_skip + " or test_basic_init_default_ctx or test_bad_channel_binding_raises_error or test_basic_accept_context or test_basic_accept_context_no_acceptor_creds or test_channel_bindings" %}
+{% set tests_to_skip = tests_to_skip + " or TestWrapUnwrap" %}
 
 test:
   imports:
     - gssapi
     - gssapi.raw
     - gssapi.raw._enum_extensions
+  source_files:      # [unix]
+    - gssapi/tests   # [unix]
   requires:
     - pip
+    - pytest         # [unix]
+    - parameterized  # [unix]
   commands:
     - pip check
+    - python -c "import importlib.metadata; assert importlib.metadata.version('gssapi') == '{{ version }}'"
+    - pip install k5test                                               # [unix]
+    - pytest -v ${SP_DIR}/gssapi/tests -k "not ({{ tests_to_skip }})"  # [unix]
+    # subprocess.CalledProcessError: Command 'krb5-config --prefix' returned non-zero exit status 1 on Windows.
+    # Skip tests on Windows because k5test gets files from %SP_DIR% and not from source files.
 
 about:
   home: https://github.com/pythongssapi/python-gssapi
