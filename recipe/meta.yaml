@@ -39,7 +39,7 @@ requirements:
     - python
     - decorator
     # libkrb5 provides gssapi64.dll on Windows
-    - libkrb5  # [win]
+    - libkrb5 >=1.21.3,<1.22.0a0  # [win]
 
 # The tests fail because of the error "FileNotFoundError: [Errno 2] No such file or directory: '/usr/sbin/kdb5_util'".
 # The real location of kdb5_util is $PREFIX/sbin not /usr/sbin but it's hardcoded in the k5test's source code,
