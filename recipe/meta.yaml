@@ -30,6 +30,7 @@ requirements:
     # but krb5 (plus executables) works fine.
     - krb5 {{ krb5 }}  # [win]
     - libkrb5 {{ krb5 }}  # [not win]
+    - libkrb5 {{ libkrb5 }}  # [win]
   run:
     - python
     - decorator
